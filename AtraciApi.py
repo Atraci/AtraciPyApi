@@ -36,8 +36,8 @@ atraciApi = AtraciApi()
 
 # Requested Term from applications
 # # print form.keys()
-term = form["search"].value
-# term = 'metallica'
+# term = form["search"].value
+term = 'metallica'
 term = atraciApi.encode(term)
 
 

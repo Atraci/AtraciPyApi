@@ -1,0 +1,4 @@
+Copy the folder Api into your /cgi-bin/ folder in your server, give permissions and you should use:
+
+Example:
+http://YOURSERVER/cgi-bin/Atraci/AtraciApi.py?search=metallica
