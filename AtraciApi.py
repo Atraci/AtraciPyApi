@@ -7,7 +7,6 @@ import Request
 import LastFmApi
 import ItunesApi
 import SoundCloudApi
-from collections import OrderedDict
 
 #Atraci API, Rest service
 requestHandler = Request.requestHandler()
@@ -64,77 +63,25 @@ if "song" in form:
     searchObject.song = form["song"].value
     searchObject.song = requestHandler.encode(searchObject.song)
     pass
+if "albumsByArtist" in form:
+    searchObject.artist = form["albumsByArtist"].value
+    searchObject.artist = requestHandler.encode(searchObject.artist)
+    pass  
 
 # Use in console
-# form = ''
 # searchObject.search = 'metallica'
 # searchObject.artist = 'stratovarius'
-# searchObject.album = 'destiny'
+# searchObject.album = 'Unbreakable'
 
 #Global Objects
 tracksDict = []
 
 # Last.Fm API
 lastFmApi = LastFmApi.Api()
-#Tracks
-if searchObject.search != "":
-    response = requestHandler.request(lastFmApi.getUrlTracks(searchObject.search))
-    jsonObject = requestHandler.encodeJson(response);
-    tracks = jsonObject['results']['trackmatches']['track']
-    for track in tracks:
-    	if 'image' in track:
-    		cover_url_medium = ''
-    		cover_url_large = ''
-    		for image in track['image']:
-    			if image['size'] == 'medium' and image['#text'] != '':
-    				cover_url_medium = image['#text']
-    			elif image['size'] == 'large' and image['#text'] != '':
-    				cover_url_large = image['#text']
-    				pass
-    		pass
-    	tracksDict.append(OrderedDict([('title',track['name'].encode('ascii')), ('artist',track['artist'].encode('ascii')), ('cover_url_medium',cover_url_medium), ('cover_url_large',cover_url_large)]))
-    	pass
-
-#Albums by artist
-if searchObject.artist != "" and searchObject.album == "":
-    response = requestHandler.request(lastFmApi.getUrlTopAlbumsByArtist(searchObject.artist))
-    jsonObject = requestHandler.encodeJson(response);
-    albums = jsonObject['topalbums']['album']
-    for album in albums:
-        if 'image' in album:
-            cover_url_medium = ''
-            cover_url_large = ''
-            for image in album['image']:
-                if image['size'] == 'medium' and image['#text'] != '':
-                    cover_url_medium = image['#text']
-                elif image['size'] == 'large' and image['#text'] != '':
-                    cover_url_large = image['#text']
-                    pass
-            pass
-        tracksDict.append(OrderedDict([('artist',album['artist']['name'].encode('ascii')), ('album',album['name'].encode('ascii')), ('cover_url_medium',cover_url_medium), ('cover_url_large',cover_url_large)]))
-        pass
-
-#Tracks from an albums and artist
-if searchObject.artist != "" and searchObject.album != "":
-    response = requestHandler.request(lastFmApi.getUrlTracksByArtistAndAlbum(searchObject.artist,searchObject.album))
-    jsonObject = requestHandler.encodeJson(response);
-    album = jsonObject['album']
-    tracks = album['tracks']['track']
-    cover_url_medium = ''
-    cover_url_large = ''
-
-    if 'image' in album:
-        for image in album['image']:
-            if image['size'] == 'medium' and image['#text'] != '':
-                cover_url_medium = image['#text']
-            elif image['size'] == 'large' and image['#text'] != '':
-                cover_url_large = image['#text']
-                pass
-        pass
-
-    for track in tracks:
-        tracksDict.append(OrderedDict([('artist',album['artist'].encode('ascii')), ('album',album['name'].encode('ascii')), ('track',track['name'].encode('ascii')), ('cover_url_medium',cover_url_medium), ('cover_url_large',cover_url_large)]))
-        pass
+# tracksDict = lastFmApi.getBysearch(searchObject.search)
+tracksDict = lastFmApi.getAlbumsByArtist(searchObject.artist)
+# tracksDict = lastFmApi.getTracksByArtistAndAlbum(searchObject.artist,searchObject.album)
+# tracksDict = lastFmApi.getTracksOfAlbumsbyArtist(searchObject.artist)
 
 #iTunes API
 itunesApi = ItunesApi.Api()
