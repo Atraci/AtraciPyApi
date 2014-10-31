@@ -69,9 +69,9 @@ if "albumsByArtist" in form:
     pass  
 
 # Use in console
-# searchObject.search = 'metallica'
-# searchObject.artist = 'stratovarius'
-# searchObject.album = 'Unbreakable'
+# searchObject.search = requestHandler.encode('Huey Lewis & The News Greatest Hits')
+searchObject.artist = requestHandler.encode('Huey Lewis & The News')
+searchObject.album = requestHandler.encode('Greatest Hits')
 
 #Global Objects
 tracksDict = []
@@ -79,8 +79,8 @@ tracksDict = []
 # Last.Fm API
 lastFmApi = LastFmApi.Api()
 # tracksDict = lastFmApi.getBysearch(searchObject.search)
-tracksDict = lastFmApi.getAlbumsByArtist(searchObject.artist)
-# tracksDict = lastFmApi.getTracksByArtistAndAlbum(searchObject.artist,searchObject.album)
+# tracksDict = lastFmApi.getAlbumsByArtist(searchObject.artist)
+tracksDict = lastFmApi.getTracksByArtistAndAlbum(searchObject.artist,searchObject.album)
 # tracksDict = lastFmApi.getTracksOfAlbumsbyArtist(searchObject.artist)
 
 #iTunes API
