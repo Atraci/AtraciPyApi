@@ -1,3 +1,5 @@
+Python API to consume music information, from different service libraries
+
 Copy the folder Api into your /cgi-bin/ folder in your server, give permissions and you should use:
 
 Example:
